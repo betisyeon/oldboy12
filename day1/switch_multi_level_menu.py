@@ -30,7 +30,7 @@ Self-Introduction
 
 def switch_multi_level_menu():
 
-    city_list = {1:'北京',2:'上海',3:'广州',4:'深圳'}
+    city_list = ['北京','上海','广州','深圳']
     district_list = {1:{'北京':{1:{'朝阳区':{1:'国贸',2:'呼家楼',3:'团结湖'}},
                             2:{'海淀区':{1:'上地',2:'苏州街',3:'国图'}},
                             3:{'昌平':{1:'回龙观',2:'沙河',3:'十三陵'}},
@@ -40,36 +40,48 @@ def switch_multi_level_menu():
                             3:{'徐汇区':{1:'徐家汇',2:'漕河泾',3:'交大'}},
                             4:{'静安区':{1:'静安寺',2:'华山医院',3:'戏剧学院'}}}}}
 
-    print("城市列表：")
-    for k,v in district_list.items():
-        print("%d - %s" % (k,list(v.keys())[0]))
-    # input的输出为字符型，需要使用int转换成整型
-    city_index = int(input("请输入城市代码："))
-    # 从字典中获取"北京"
-    city_name = list(district_list[city_index].keys())[0]
-    # 获取所输入城市的区划字典
-    district_dict = district_list[city_index][city_name]
-    print(district_dict)
-    print("%s的行政区划列表：" % city_name)
-    # 获取隶属于"北京"的行政区划列表
-    for k,v in district_dict.items():
-        print("%d - %s" % (k, list(v.keys())[0]))
-    # 用户输入行政区划代码并将字符型转换为整型
-    district_index = int(input("请输入当前行政区划代码："))
-    # 获取当前输入的行政区划名称
-    district_name = list(district_dict[district_index].keys())[0]
-    print("%s的地标列表：" % district_name)
-    # 获取当前行政区划内的地标字典，即列表
-    place_dict = district_dict[district_index][district_name]
-    # 按顺序显示当前区划内的地标列表
-    for k,v in place_dict.items():
-        print("%d - %s" % (k, v))
-    # 用户输入当前关注的地标代码
-    place_index = int(input("请输入当前地标的代码："))
-    # 获取当前地标的名称
-    place_name = place_dict[place_index]
-    # 提示用户当前所选择地标的具体位置
-    print("您当前所选地标为: %s市-%s-%s" % (city_name,district_name,place_name))
+    while True:
+
+        print("城市列表：")
+        for k,v in district_list.items():
+            print("%d - %s" % (k,list(v.keys())[0]))
+        # input的输出为字符型，需要使用int转换成整型
+        city_index = int(input("请输入城市代码："))
+        # 从字典中获取"北京"
+        city_name = list(district_list[city_index].keys())[0]
+        while city_name in city_list:
+            # 获取所输入城市的区划字典
+            district_dict = district_list[city_index][city_name]
+            target_district_list = [None]
+            print(district_dict)
+            print("%s的行政区划列表：" % city_name)
+            # 获取隶属于"北京"的行政区划列表
+            for k,v in district_dict.items():
+                print("%d - %s" % (k, list(v.keys())[0]))
+                target_district_list.append(list(v.keys())[0])
+            # 用户输入行政区划代码并将字符型转换为整型
+            district_index = int(input("请输入当前行政区划代码："))
+            # 获取当前输入的行政区划名称
+            district_name = list(district_dict[district_index].keys())[0]
+
+            while district_name in target_district_list:
+                print("%s的地标列表：" % district_name)
+                # 获取当前行政区划内的地标字典，即列表
+                place_dict = district_dict[district_index][district_name]
+                # 按顺序显示当前区划内的地标列表
+                for k,v in place_dict.items():
+                    print("%d - %s" % (k, v))
+                # 用户输入当前关注的地标代码
+                place_index = int(input("请输入当前地标的代码："))
+                # 获取当前地标的名称
+                place_name = place_dict[place_index]
+                if place_name in place_dict.values():
+                    # 提示用户当前所选择地标的具体位置
+                    print("您当前所选地标为: %s市-%s-%s" % (city_name,district_name,place_name))
+                else:
+                    pass
+        else:
+            print("输入有误，请重新输入！")
 
 
 
